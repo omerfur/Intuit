@@ -10,4 +10,4 @@ The source of Players.csv configured in `/src/main/java/resources/application.pr
 Return 200 if found and 404 if not found.
 
 [/api/players](http://localhost:8080/api/players}) - get all players.
-Return list of all players. For now with no pagination.
+Return list of all players. For now without pagination.
