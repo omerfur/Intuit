@@ -42,44 +42,50 @@ public class DataConfiguration {
             br.readLine(); //skip the first line (titles line)
             String line = br.readLine();
             while (line != null) {
-                String[] playerAttributes = line.split(",");
-                Player player = Player.builder()
-                        .playerId((String) buildPlayerAttribute(playerAttributes,index,String.class))
-                        .birthYear((Long) buildPlayerAttribute(playerAttributes,++index,Long.class))
-                        .birthMonth((Integer) buildPlayerAttribute(playerAttributes,++index,Integer.class))
-                        .birthDay((Integer) buildPlayerAttribute(playerAttributes,++index,Integer.class))
-                        .birthCountry((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .birthState((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .birthCity((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .deathYear((Long) buildPlayerAttribute(playerAttributes,++index,Long.class))
-                        .deathMonth((Integer) buildPlayerAttribute(playerAttributes,++index,Integer.class))
-                        .deathDay((Integer) buildPlayerAttribute(playerAttributes,++index,Integer.class))
-                        .deathCountry((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .deathCountry((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .deathCity((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .firstName((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .lastName((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .nameGiven((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .weight((Integer) buildPlayerAttribute(playerAttributes,++index,Integer.class))
-                        .height((Integer) buildPlayerAttribute(playerAttributes,++index,Integer.class))
-                        .bats((Character) buildPlayerAttribute(playerAttributes,++index,Character.class))
-                        .throwsLetter((Character) buildPlayerAttribute(playerAttributes,++index,Character.class))
-                        .debut((Date) buildPlayerAttribute(playerAttributes,++index,Date.class))
-                        .finalGame((Date) buildPlayerAttribute(playerAttributes,++index,Date.class))
-                        .retroID((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .bbrefID((String) buildPlayerAttribute(playerAttributes,++index,String.class))
-                        .build();
-                players.put(player.getPlayerId(),player);
+                try {
+                    String[] playerAttributes = line.split(",");
+                    Player player = Player.builder()
+                            .playerId((String) buildPlayerAttribute(playerAttributes, index, String.class))
+                            .birthYear((Long) buildPlayerAttribute(playerAttributes, ++index, Long.class))
+                            .birthMonth((Integer) buildPlayerAttribute(playerAttributes, ++index, Integer.class))
+                            .birthDay((Integer) buildPlayerAttribute(playerAttributes, ++index, Integer.class))
+                            .birthCountry((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .birthState((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .birthCity((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .deathYear((Long) buildPlayerAttribute(playerAttributes, ++index, Long.class))
+                            .deathMonth((Integer) buildPlayerAttribute(playerAttributes, ++index, Integer.class))
+                            .deathDay((Integer) buildPlayerAttribute(playerAttributes, ++index, Integer.class))
+                            .deathCountry((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .deathCountry((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .deathCity((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .firstName((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .lastName((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .nameGiven((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .weight((Integer) buildPlayerAttribute(playerAttributes, ++index, Integer.class))
+                            .height((Integer) buildPlayerAttribute(playerAttributes, ++index, Integer.class))
+                            .bats((Character) buildPlayerAttribute(playerAttributes, ++index, Character.class))
+                            .throwsLetter((Character) buildPlayerAttribute(playerAttributes, ++index, Character.class))
+                            .debut((Date) buildPlayerAttribute(playerAttributes, ++index, Date.class))
+                            .finalGame((Date) buildPlayerAttribute(playerAttributes, ++index, Date.class))
+                            .retroID((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .bbrefID((String) buildPlayerAttribute(playerAttributes, ++index, String.class))
+                            .build();
+                    players.put(player.getPlayerId(), player);
+                } catch (Exception e) {
+                    log.error("[DataConfiguration][players] Error accrued during data loading in attribute {}, line number {}",index,lineNumber,e);
+                    //increase matrix
+                }
                 line = br.readLine();
-                index=0;
+                index = 0;
                 lineNumber++;
             }
         } catch (IOException e) {
-            log.error("[DataConfiguration][players] Error accrued during data loading in attribute {}, line number {}",index,lineNumber,e);
+            log.error("[DataConfiguration][players] Error accrued during data loading from file in path {}",csvPath,e);
             //increase matrix
+            throw new RuntimeException(e);
+
         }
         return players;
-
 
     }
     private Object buildPlayerAttribute(String [] attributes, int index, Class returnObjectType){
