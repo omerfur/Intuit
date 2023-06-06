@@ -9,5 +9,5 @@ The source of Players.csv configured in `/src/main/java/resources/application.pr
 [/api/player/{playerId}](http://localhost:8080/api/player/{playerId}) - get single player by id.
 Return 200 if found and 404 if not found.
 
-[/api/player/{playerId}](http://localhost:8080/api/players}) - get all players.
-Return list of all players. For now with no pagination.
+[/api/players](http://localhost:8080/api/players}) - get all players.
+Return list of all players. For now without pagination.
