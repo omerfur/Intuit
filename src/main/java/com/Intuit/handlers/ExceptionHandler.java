@@ -13,22 +13,22 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = NoSuchElementException.class)
     public ResponseEntity<ExceptionResponseDto> itemNotFoundException(NoSuchElementException exception){
-        return buildResponseEntity(HttpStatus.NOT_FOUND,"Player not found");
+        return buildResponseEntity(HttpStatus.NOT_FOUND,"Player not found",exception);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ExceptionResponseDto> runtimeException(RuntimeException exception){
-        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR,"Service not available");
+        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR,"Service not available",exception);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = Exception.class)
     public ResponseEntity<ExceptionResponseDto> exception(Exception exception){
-        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR,"Service not available");
+        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR,"Service not available",exception);
     }
 
-    private ResponseEntity<ExceptionResponseDto> buildResponseEntity(HttpStatus httpStatus,String message){
+    private ResponseEntity<ExceptionResponseDto> buildResponseEntity(HttpStatus httpStatus,String message,Exception e){
         ExceptionResponseDto exceptionResponseDto = new ExceptionResponseDto(httpStatus,message);
-        log.error("[ExceptionHandler][buildResponseEntity] error accrued in request path: {} in time: {}",exceptionResponseDto.getPath(),exceptionResponseDto.getTimestamp());
+        log.error("[ExceptionHandler][buildResponseEntity] error accrued in request path: {} in time: {}",exceptionResponseDto.getPath(),exceptionResponseDto.getTimestamp(),e);
         return new ResponseEntity<>(exceptionResponseDto, httpStatus);
     }
 

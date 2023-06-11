@@ -1,5 +1,7 @@
 package com.Intuit.controllers;
 
+import com.Intuit.controllers.dtos.PlayerResponseDto;
+import com.Intuit.mappers.PlayerMapper;
 import com.Intuit.models.Player;
 import com.Intuit.services.PlayerService;
 import lombok.NonNull;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing {@link com.Intuit.models.Player}.
@@ -36,10 +39,11 @@ public class PlayerController {
      */
 
     @GetMapping("/players")
-    public ResponseEntity<List<Player>> getAllPlayers(){
+    public ResponseEntity<List<PlayerResponseDto>> getAllPlayers(){
         log.debug("REST request to get all players");
         List<Player> allPlayers = playerService.getAllPlayers();
-        return ResponseEntity.ok().body(allPlayers);
+        List<PlayerResponseDto> playerResponseDtoList = allPlayers.stream().map(player -> PlayerMapper.MAPPER.playerToPlayerResponseDto(player)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(playerResponseDtoList);
     }
 
     /**
@@ -50,9 +54,10 @@ public class PlayerController {
      */
 
     @GetMapping("/player/{playerId}")
-    public ResponseEntity<Player> getPlayerById(@PathVariable @NonNull String playerId){
+    public ResponseEntity<PlayerResponseDto> getPlayerById(@PathVariable @NonNull String playerId){
         log.debug("REST request to get player with id: {}",playerId);
         Player player = playerService.getPlayerById(playerId);
-        return ResponseEntity.ok().body(player);
+        PlayerResponseDto playerResponseDto = PlayerMapper.MAPPER.playerToPlayerResponseDto(player);
+        return ResponseEntity.ok().body(playerResponseDto);
     }
 }
