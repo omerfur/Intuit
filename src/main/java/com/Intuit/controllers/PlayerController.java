@@ -43,7 +43,7 @@ public class PlayerController {
     }
 
     /**
-     * {@code GET  /player/id} : get the "id" author.
+     * {@code GET  /player/id} : get the "id" player.
      *
      * @param playerId the id of the player to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the player, or with status {@code 404 (Not Found)}.
