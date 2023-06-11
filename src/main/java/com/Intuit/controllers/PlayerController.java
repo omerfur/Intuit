@@ -40,7 +40,7 @@ public class PlayerController {
 
     @GetMapping("/players")
     public ResponseEntity<List<PlayerResponseDto>> getAllPlayers(){
-        log.debug("REST request to get all players");
+        log.debug("[PlayerController][getPlayerById] REST request to get all players");
         List<Player> allPlayers = playerService.getAllPlayers();
         List<PlayerResponseDto> playerResponseDtoList = allPlayers.stream().map(player -> PlayerMapper.MAPPER.playerToPlayerResponseDto(player)).collect(Collectors.toList());
         return ResponseEntity.ok().body(playerResponseDtoList);
@@ -55,7 +55,7 @@ public class PlayerController {
 
     @GetMapping("/player/{playerId}")
     public ResponseEntity<PlayerResponseDto> getPlayerById(@PathVariable @NonNull String playerId){
-        log.debug("REST request to get player with id: {}",playerId);
+        log.debug("[PlayerController][getPlayerById] REST request to get player with id: {}",playerId);
         Player player = playerService.getPlayerById(playerId);
         PlayerResponseDto playerResponseDto = PlayerMapper.MAPPER.playerToPlayerResponseDto(player);
         return ResponseEntity.ok().body(playerResponseDto);
